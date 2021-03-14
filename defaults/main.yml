@@ -2,3 +2,4 @@
 # configure_etc_resolv_conf/defaults/main.yml
 
 desired_domain_name: "training.b1-systems.de"
+use_localhost_as_nameserver: 'false'

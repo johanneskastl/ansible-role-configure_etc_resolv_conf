@@ -27,3 +27,14 @@
         supersede domain-name "{{ desired_domain_name }}";
         supersede domain-search "{{ desired_domain_name }}";
       }
+  when: 'use_localhost_as_nameserver | bool'
+
+- name: 'Override domainname in dhclient.conf'
+  blockinfile:
+    path: "{{ path_to_dhclient_conf }}"
+    block: |
+      interface "{{ ansible_default_ipv4.interface }}" {
+        supersede domain-name "{{ desired_domain_name }}";
+        supersede domain-search "{{ desired_domain_name }}";
+      }
+  when: 'not use_localhost_as_nameserver | bool'
