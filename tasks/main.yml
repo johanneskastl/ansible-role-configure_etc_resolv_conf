@@ -1,0 +1,29 @@
+---
+# configure_etc_resolv_conf/tasks/main.yml
+
+- name: "Load variables"
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "vars_{{ ansible_distribution }}.yml"
+    - "vars_{{ ansible_os_family }}.yml"
+
+- name: 'Set TRUNCATE_NAMESERVER_LIST_AFTER_LOOPBACK_ADDRESS in /etc/default/resolvconf'
+  lineinfile:
+    path: '/etc/default/resolvconf'
+    regex: '^TRUNCATE_NAMESERVER_LIST_AFTER_LOOPBACK_ADDRESS'
+    line: 'TRUNCATE_NAMESERVER_LIST_AFTER_LOOPBACK_ADDRESS="no"'
+    create: 'true'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  when: 'ansible_distribution == "Debian"'
+
+- name: 'Override domainname and add 127.0.0.1 as nameserver in dhclient.conf'
+  blockinfile:
+    path: "{{ path_to_dhclient_conf }}"
+    block: |
+      interface "{{ ansible_default_ipv4.interface }}" {
+        prepend domain-name-servers 127.0.0.1;
+        supersede domain-name "{{ desired_domain_name }}";
+        supersede domain-search "{{ desired_domain_name }}";
+      }
