@@ -37,4 +37,15 @@
         supersede domain-name "{{ desired_domain_name }}";
         supersede domain-search "{{ desired_domain_name }}";
       }
-  when: 'not use_localhost_as_nameserver | bool'
+  when: 'not use_localhost_as_nameserver | bool and not custom_nameservers is defined'
+
+- name: 'Override domainname and add custom nameservers in dhclient.conf'
+  blockinfile:
+    path: "{{ path_to_dhclient_conf }}"
+    block: |
+      interface "{{ ansible_default_ipv4.interface }}" {
+        supersede domain-name-servers {{ custom_nameservers | join(", ") }};
+        supersede domain-name "{{ desired_domain_name }}";
+        supersede domain-search "{{ desired_domain_name }}";
+      }
+  when: 'not use_localhost_as_nameserver | bool and custom_nameservers is defined'
