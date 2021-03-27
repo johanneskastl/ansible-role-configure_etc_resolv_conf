@@ -3,3 +3,6 @@
 
 # Where is the dhclient.conf
 path_to_dhclient_conf: '/etc/dhcp/dhclient.conf'
+
+# name of the network systemd service
+network_service: 'networking'
