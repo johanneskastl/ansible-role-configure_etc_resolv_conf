@@ -17,6 +17,8 @@
     group: 'root'
     mode: '0644'
   when: 'ansible_distribution == "Debian"'
+  notify:
+    - 'Restart network service'
 
 - name: 'Override domainname and add 127.0.0.1 as nameserver in dhclient.conf'
   blockinfile:
@@ -28,6 +30,8 @@
         supersede domain-search "{{ desired_domain_name }}";
       }
   when: 'use_localhost_as_nameserver | bool'
+  notify:
+    - 'Restart network service'
 
 - name: 'Override domainname in dhclient.conf'
   blockinfile:
@@ -38,6 +42,8 @@
         supersede domain-search "{{ desired_domain_name }}";
       }
   when: 'not use_localhost_as_nameserver | bool and not custom_nameservers is defined'
+  notify:
+    - 'Restart network service'
 
 - name: 'Override domainname and add custom nameservers in dhclient.conf'
   blockinfile:
@@ -49,3 +55,5 @@
         supersede domain-search "{{ desired_domain_name }}";
       }
   when: 'not use_localhost_as_nameserver | bool and custom_nameservers is defined'
+  notify:
+    - 'Restart network service'
