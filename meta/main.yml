@@ -1,5 +1,6 @@
 galaxy_info:
   role_name: 'configure_etc_resolv_conf'
+  namespace: 'johanneskastl'
   author: 'Johannes Kastl'
   description: 'Configure the /etc/resolv.conf file to set custom nameservers and search domains'
   company: 'B1 Systems GmbH'
