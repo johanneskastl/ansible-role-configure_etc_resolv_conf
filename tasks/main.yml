@@ -2,13 +2,13 @@
 # configure_etc_resolv_conf/tasks/main.yml
 
 - name: "Load variables"
-  include_vars: "{{ item }}"
+  ansible.builtin.include_vars: "{{ item }}"
   with_first_found:
     - "vars_{{ ansible_distribution }}.yml"
     - "vars_{{ ansible_os_family }}.yml"
 
 - name: 'Set TRUNCATE_NAMESERVER_LIST_AFTER_LOOPBACK_ADDRESS in /etc/default/resolvconf'
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '/etc/default/resolvconf'
     regex: '^TRUNCATE_NAMESERVER_LIST_AFTER_LOOPBACK_ADDRESS'
     line: 'TRUNCATE_NAMESERVER_LIST_AFTER_LOOPBACK_ADDRESS="no"'
@@ -21,7 +21,7 @@
     - 'Restart network service'
 
 - name: 'Override domainname and add 127.0.0.1 as nameserver in dhclient.conf'
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: "{{ path_to_dhclient_conf }}"
     block: |
       interface "{{ ansible_default_ipv4.interface }}" {
@@ -34,7 +34,7 @@
     - 'Restart network service'
 
 - name: 'Override domainname in dhclient.conf'
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: "{{ path_to_dhclient_conf }}"
     block: |
       interface "{{ ansible_default_ipv4.interface }}" {
@@ -46,7 +46,7 @@
     - 'Restart network service'
 
 - name: 'Override domainname and add custom nameservers in dhclient.conf'
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: "{{ path_to_dhclient_conf }}"
     block: |
       interface "{{ ansible_default_ipv4.interface }}" {
