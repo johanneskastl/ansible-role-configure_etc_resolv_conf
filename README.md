@@ -25,7 +25,7 @@ Example Playbook
 
     - hosts: servers
       roles:
-         - { role: 'johanneskastl.configure_etc_resolv_conf' }
+         - role: 'johanneskastl.configure_etc_resolv_conf'
 
 License
 -------
