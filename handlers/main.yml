@@ -2,6 +2,6 @@
 # configure_etc_resolv_conf/handlers/main.yml
 
 - name: 'Restart network service'
-  service:
+  ansible.builtin.service:
     name: "{{ network_service }}"
     state: 'restarted'
